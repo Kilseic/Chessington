@@ -14,22 +14,26 @@ namespace Chessington.GameEngine.Pieces
             List<Square> availableMoves = new List<Square>();
             if (Player == Player.White)
             {
-                Square move = new Square(location.Row-1,location.Col);
-                availableMoves.Add(move);
-                if (HasEverMoved == false)
+                if (Board.SquareOpen(board,Square.At(location.Row - 1, location.Col)))
                 {
-                    Square move2 = new Square(location.Row-2,location.Col);
-                    availableMoves.Add(move2);
+                    availableMoves.Add(Square.At(location.Row - 1, location.Col));
+                    if (HasEverMoved == false)
+                    {
+                        if (Board.SquareOpen(board, Square.At(location.Row - 2, location.Col)))
+                            availableMoves.Add(Square.At(location.Row - 2, location.Col));
+                    }
                 }
             }
             else
             {
-                Square move = new Square(location.Row+1,location.Col);
-                availableMoves.Add(move);
-                if (HasEverMoved == false)
+                if (Board.SquareOpen(board,Square.At(location.Row + 1, location.Col)))
                 {
-                    Square move2 = new Square(location.Row+2,location.Col);
-                    availableMoves.Add(move2);
+                    availableMoves.Add(Square.At(location.Row+1,location.Col));
+                    if (HasEverMoved == false)
+                    {
+                        if (Board.SquareOpen(board,Square.At(location.Row+2,location.Col))) 
+                            availableMoves.Add(Square.At(location.Row+2,location.Col));
+                    }
                 }
             }
 

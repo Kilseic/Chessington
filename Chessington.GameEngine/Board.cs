@@ -97,5 +97,10 @@ namespace Chessington.GameEngine
             }
             return false;
         }
+
+        public static bool SquareOpen(Board board, Square inputLocation)
+        {
+            return board.GetPiece(inputLocation) == null;
+        }
     }
 }
