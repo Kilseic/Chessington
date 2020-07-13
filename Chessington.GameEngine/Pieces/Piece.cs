@@ -12,6 +12,7 @@ namespace Chessington.GameEngine.Pieces
         }
 
         public Player Player { get; private set; }
+        public bool HasEverMoved = false;
 
         public abstract IEnumerable<Square> GetAvailableMoves(Board board);
 
@@ -19,6 +20,7 @@ namespace Chessington.GameEngine.Pieces
         {
             var currentSquare = board.FindPiece(this);
             board.MovePiece(currentSquare, newSquare);
+            HasEverMoved = true;
         }
     }
 }
