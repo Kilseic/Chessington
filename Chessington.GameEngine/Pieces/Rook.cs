@@ -10,7 +10,8 @@ namespace Chessington.GameEngine.Pieces
 
         public override IEnumerable<Square> GetAvailableMoves(Board board)
         {
-            List<Square> availableMoves = LineMovement.LateralMovement(board.FindPiece(this));
+            LineMovement NewMovement = new LineMovement(board,Player);
+            List<Square> availableMoves = NewMovement.LateralMovement(board.FindPiece(this));
             IEnumerable<Square> listOfMoves = availableMoves;
             return listOfMoves;
         }

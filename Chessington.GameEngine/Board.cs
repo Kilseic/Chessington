@@ -102,5 +102,10 @@ namespace Chessington.GameEngine
         {
             return board.GetPiece(inputLocation) == null;
         }
+
+        public static Player SquareLoyalty(Board board,Square inputLocation)
+        {
+            return board.GetPiece(inputLocation).Player;
+        }
     }
 }
