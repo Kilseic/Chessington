@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Chessington.GameEngine.Pieces
@@ -12,29 +13,35 @@ namespace Chessington.GameEngine.Pieces
         {
             Square location = board.FindPiece(this);
             List<Square> availableMoves = new List<Square>();
-            availableMoves = availableMoves.Concat(FindKnightMoves(-2, 1, location)).ToList();
-            availableMoves = availableMoves.Concat(FindKnightMoves(2, 1, location)).ToList();
-            availableMoves = availableMoves.Concat(FindKnightMoves(-1, 2, location)).ToList();
-            availableMoves = availableMoves.Concat(FindKnightMoves(1, 2, location)).ToList();
-            return availableMoves;
+            availableMoves = availableMoves.Concat(FindKnightMoves(location)).ToList();
+            var outputMoves = from move in availableMoves where InRange(move) select move;
+            return outputMoves;
         }
 
-        private List<Square> FindKnightMoves(int rowChange, int colChange, Square location)
+        public bool InRange(Square inputSquare)
         {
             IEnumerable<int> boardBoundaries = Enumerable.Range(0, GameSettings.BoardSize);
-            List<Square> moveOutput = new List<Square>();
-            if (boardBoundaries.Contains(location.Row + rowChange))
+            if (boardBoundaries.Contains(inputSquare.Col))
             {
-                if (boardBoundaries.Contains(location.Col + colChange))
+                if (boardBoundaries.Contains(inputSquare.Row))
                 {
-                    moveOutput.Add(Square.At(location.Row+rowChange, location.Col+colChange));
-                }
-                if (boardBoundaries.Contains(location.Col - colChange))
-                {
-                    moveOutput.Add(Square.At(location.Row+rowChange, location.Col-colChange));
+                    return true;
                 }
             }
+            return false;
+        }
 
+        private List<Square> FindKnightMoves(Square location)
+        {
+            List<Square> moveOutput = new List<Square>();
+            moveOutput.Add(Square.At(location.Row+2, location.Col+1));
+            moveOutput.Add(Square.At(location.Row+2, location.Col-1));
+            moveOutput.Add(Square.At(location.Row-2, location.Col+1));
+            moveOutput.Add(Square.At(location.Row-2, location.Col-1));
+            moveOutput.Add(Square.At(location.Row+1, location.Col+2));
+            moveOutput.Add(Square.At(location.Row+1, location.Col-2));
+            moveOutput.Add(Square.At(location.Row-1, location.Col+2));
+            moveOutput.Add(Square.At(location.Row-1, location.Col-2));
             return moveOutput;
         }
     }
