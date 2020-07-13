@@ -7,7 +7,7 @@ namespace Chessington.GameEngine
     {
         public static List<Square> LateralMovement(List<Square> currMoveList, Square location)
         {
-            for (var i = 0; i < 8; i++)
+            for (var i = 0; i < GameSettings.BoardSize; i++)
             {
                 currMoveList.Add(Square.At(location.Row, i));
                 currMoveList.Add(Square.At(i, location.Col));
@@ -18,8 +18,8 @@ namespace Chessington.GameEngine
 
         public static List<Square> DiagonalMovement(List<Square> currMoveList, Square location)
         {
-            IEnumerable<int> boardBoundaries = Enumerable.Range(0, 8);
-            for (int i = 1; i < 8; i++)
+            IEnumerable<int> boardBoundaries = Enumerable.Range(0, GameSettings.BoardSize);
+            for (int i = 1; i < GameSettings.BoardSize; i++)
             {
                 if (boardBoundaries.Contains(location.Row + i))
                 {
