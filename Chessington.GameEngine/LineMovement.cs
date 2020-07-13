@@ -16,56 +16,48 @@ namespace Chessington.GameEngine
         public List<Square> LateralMovement(Square location)
         {
             List<Square> currMoveList = new List<Square>();
-            bool dir1 = true;
-            bool dir2 = true;
-            bool dir3 = true;
-            bool dir4 = true;
+            bool dir1 = true,dir2 = true,dir3= true,dir4 = true;
             for (var i = 1; i < GameSettings.BoardSize; i++)
             {
                 if (Board.InRange(Square.At(location.Row, location.Col+i))&dir1)
                 {
-                    if (Board.SquareOpen(MyBoard, Square.At(location.Row, location.Col+i))) 
-                        currMoveList.Add(Square.At(location.Row, location.Col+i));
-                    else if (Board.SquareLoyalty(MyBoard, Square.At(location.Row, location.Col+i)) == MyPlayer)
-                        dir1 = false;
-                    else
-                    { currMoveList.Add(Square.At(location.Row, location.Col+i)); dir1=false; }
+                    dir1 = AddPossMove(location.Row, location.Col + i);
                 }
 
                 if (Board.InRange(Square.At(location.Row, location.Col-i))&dir2)
                 {
-                    if (Board.SquareOpen(MyBoard, Square.At(location.Row, location.Col-i))) 
-                        currMoveList.Add(Square.At(location.Row, location.Col-i));
-                    else if (Board.SquareLoyalty(MyBoard, Square.At(location.Row, location.Col-i)) == MyPlayer)
-                        dir2 = false;
-                    else
-                    { currMoveList.Add(Square.At(location.Row, location.Col-i)); dir2=false; }
+                    dir2 = AddPossMove(location.Row, location.Col - i);
                 }
 
                 if (Board.InRange(Square.At(location.Row+i, location.Col))&dir3)
                 {
-                    if (Board.SquareOpen(MyBoard, Square.At(location.Row+i, location.Col))) 
-                        currMoveList.Add(Square.At(location.Row+i, location.Col));
-                    else if (Board.SquareLoyalty(MyBoard, Square.At(location.Row+i, location.Col)) == MyPlayer)
-                        dir3 = false;
-                    else
-                    { currMoveList.Add(Square.At(location.Row+i, location.Col)); dir3=false; }
+                    dir3 = AddPossMove(location.Row+i, location.Col);
                 }
 
                 if (Board.InRange(Square.At(location.Row-i, location.Col))&dir4)
                 {
-                    if (Board.SquareOpen(MyBoard, Square.At(location.Row-i, location.Col))) 
-                        currMoveList.Add(Square.At(location.Row-i, location.Col));
-                    else if (Board.SquareLoyalty(MyBoard, Square.At(location.Row-i, location.Col)) == MyPlayer)
-                        dir4 = false;
-                    else
-                    { currMoveList.Add(Square.At(location.Row-i, location.Col)); dir4=false; }
+                    dir4 = AddPossMove(location.Row-i, location.Col);
                 }
             }
-            currMoveList.RemoveAll(s => s == Square.At(location.Row, location.Col));
-            //var outputMoves = currMoveList.Where(Board.InRange).ToList();
             return currMoveList;
+            
+            bool AddPossMove(int row, int col)
+            {
+                if (Board.SquareOpen(MyBoard, Square.At(row, col))) 
+                    currMoveList.Add(Square.At(row, col));
+                else if (Board.SquareLoyalty(MyBoard, Square.At(row, col)) == MyPlayer)
+                    return false;
+                else
+                {
+                    currMoveList.Add(Square.At(row, col));
+                    return false;
+                }
+
+                return true;
+            }
         }
+
+        
 
         public List<Square> DiagonalMovement(Square location)
         {
