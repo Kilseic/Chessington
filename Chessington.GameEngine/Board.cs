@@ -84,5 +84,18 @@ namespace Chessington.GameEngine
             var handler = CurrentPlayerChanged;
             if (handler != null) handler(player);
         }
+        
+        public static bool InRange(Square inputSquare)
+        {
+            IEnumerable<int> boardBoundaries = Enumerable.Range(0, GameSettings.BoardSize);
+            if (boardBoundaries.Contains(inputSquare.Col))
+            {
+                if (boardBoundaries.Contains(inputSquare.Row))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

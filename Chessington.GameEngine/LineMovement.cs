@@ -5,8 +5,9 @@ namespace Chessington.GameEngine
 {
     public class LineMovement
     {
-        public static List<Square> LateralMovement(List<Square> currMoveList, Square location)
+        public static List<Square> LateralMovement(Square location)
         {
+            List<Square> currMoveList = new List<Square>();
             for (var i = 0; i < GameSettings.BoardSize; i++)
             {
                 currMoveList.Add(Square.At(location.Row, i));
@@ -16,38 +17,18 @@ namespace Chessington.GameEngine
             return currMoveList;
         }
 
-        public static List<Square> DiagonalMovement(List<Square> currMoveList, Square location)
+        public static List<Square> DiagonalMovement(Square location)
         {
-            IEnumerable<int> boardBoundaries = Enumerable.Range(0, GameSettings.BoardSize);
+            List<Square> availableMoves = new List<Square>();
             for (int i = 1; i < GameSettings.BoardSize; i++)
             {
-                if (boardBoundaries.Contains(location.Row + i))
-                {
-                    if (boardBoundaries.Contains(location.Col + i))
-                    {
-                        currMoveList.Add(Square.At(location.Row+i,location.Col+i));
-                    }
-
-                    if (boardBoundaries.Contains(location.Col - i))
-                    {
-                        currMoveList.Add(Square.At(location.Row+i,location.Col-i));
-                    }
-                }
-                if (boardBoundaries.Contains(location.Row - i))
-                {
-                    if (boardBoundaries.Contains(location.Col - i))
-                    {
-                        currMoveList.Add(Square.At(location.Row-i,location.Col-i));
-                    }
-
-                    if (boardBoundaries.Contains(location.Col + i))
-                    {
-                        currMoveList.Add(Square.At(location.Row-i,location.Col+i));
-                    }
-                }
+                availableMoves.Add(Square.At(location.Row+i,location.Col+i));
+                availableMoves.Add(Square.At(location.Row+i,location.Col-i));
+                availableMoves.Add(Square.At(location.Row-i,location.Col-i));
+                availableMoves.Add(Square.At(location.Row-i,location.Col+i));
             }
-
-            return currMoveList;
+            var outputMoves = availableMoves.Where(Board.InRange);
+            return outputMoves.ToList();
         }
     }
 }
