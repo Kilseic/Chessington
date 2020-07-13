@@ -61,16 +61,46 @@ namespace Chessington.GameEngine
 
         public List<Square> DiagonalMovement(Square location)
         {
-            List<Square> availableMoves = new List<Square>();
-            for (int i = 1; i < GameSettings.BoardSize; i++)
+            List<Square> currMoveList = new List<Square>();
+            bool dir1 = true,dir2 = true,dir3= true,dir4 = true;
+            for (var i = 1; i < GameSettings.BoardSize; i++)
             {
-                availableMoves.Add(Square.At(location.Row+i,location.Col+i));
-                availableMoves.Add(Square.At(location.Row+i,location.Col-i));
-                availableMoves.Add(Square.At(location.Row-i,location.Col-i));
-                availableMoves.Add(Square.At(location.Row-i,location.Col+i));
+                if (Board.InRange(Square.At(location.Row+i, location.Col+i))&dir1)
+                {
+                    dir1 = AddPossMove(location.Row+i, location.Col + i);
+                }
+
+                if (Board.InRange(Square.At(location.Row-i, location.Col-i))&dir2)
+                {
+                    dir2 = AddPossMove(location.Row-i, location.Col - i);
+                }
+
+                if (Board.InRange(Square.At(location.Row+i, location.Col-i))&dir3)
+                {
+                    dir3 = AddPossMove(location.Row+i, location.Col-i);
+                }
+
+                if (Board.InRange(Square.At(location.Row-i, location.Col+i))&dir4)
+                {
+                    dir4 = AddPossMove(location.Row-i, location.Col+i);
+                }
             }
-            var outputMoves = availableMoves.Where(Board.InRange).ToList();
-            return outputMoves.ToList();
+            return currMoveList;
+            
+            bool AddPossMove(int row, int col)
+            {
+                if (Board.SquareOpen(MyBoard, Square.At(row, col))) 
+                    currMoveList.Add(Square.At(row, col));
+                else if (Board.SquareLoyalty(MyBoard, Square.At(row, col)) == MyPlayer)
+                    return false;
+                else
+                {
+                    currMoveList.Add(Square.At(row, col));
+                    return false;
+                }
+
+                return true;
+            }
         }
     }
 }
