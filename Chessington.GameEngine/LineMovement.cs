@@ -15,33 +15,25 @@ namespace Chessington.GameEngine
         }
         public IEnumerable<Square> LateralMovement(Square location)
         {
-            Direction direction1 = new Direction(0,+1);
-            Direction direction2 = new Direction(0,-1);
-            Direction direction3 = new Direction(+1,0);
-            Direction direction4 = new Direction(-1,0);
-            IEnumerable<Square> currMoveList = GoInDirection(location, direction1);
-            currMoveList = currMoveList.Concat(GoInDirection(location, direction2));
-            currMoveList = currMoveList.Concat(GoInDirection(location, direction3));
-            currMoveList = currMoveList.Concat(GoInDirection(location, direction4));
-            return currMoveList;
+            IEnumerable<Square> moveList = GoInDirection(location, new Direction(0,+1));
+            moveList = moveList.Concat(GoInDirection(location, new Direction(0,-1)));
+            moveList = moveList.Concat(GoInDirection(location, new Direction(+1,0)));
+            moveList = moveList.Concat(GoInDirection(location, new Direction(-1,0)));
+            return moveList;
         }
 
         public IEnumerable<Square> DiagonalMovement(Square location)
         {
-            Direction direction1 = new Direction(+1,+1);
-            Direction direction2 = new Direction(-1,-1);
-            Direction direction3 = new Direction(+1,-1);
-            Direction direction4 = new Direction(-1,+1);
-            IEnumerable<Square> currMoveList = GoInDirection(location, direction1);
-            currMoveList = currMoveList.Concat(GoInDirection(location, direction2));
-            currMoveList = currMoveList.Concat(GoInDirection(location, direction3));
-            currMoveList = currMoveList.Concat(GoInDirection(location, direction4));
-            return currMoveList;
+            IEnumerable<Square> moveList = GoInDirection(location, new Direction(+1,+1));
+            moveList = moveList.Concat(GoInDirection(location, new Direction(-1,-1)));
+            moveList = moveList.Concat(GoInDirection(location, new Direction(+1,-1)));
+            moveList = moveList.Concat(GoInDirection(location, new Direction(-1,+1)));
+            return moveList;
         }
 
         private IEnumerable<Square> GoInDirection(Square location, Direction direction)
         {
-            List<Square> currMoveList = new List<Square>();
+            List<Square> moveList = new List<Square>();
             DirectionIndicators indicators = new DirectionIndicators(true,false, MyBoard,MyPlayer);
             int i = 1;
             while (indicators.KeepGoing)
@@ -50,13 +42,13 @@ namespace Chessington.GameEngine
                     location.Col + i*direction.changeInCol);
                 if (indicators.Add)
                 {
-                    currMoveList.Add(Square.At(location.Row + i * direction.changeInRow,
+                    moveList.Add(Square.At(location.Row + i * direction.changeInRow,
                         location.Col + i * direction.changeInCol));
                 }
                 i++;
             }
 
-            return currMoveList;
+            return moveList;
         }
     }
 }
