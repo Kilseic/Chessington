@@ -13,8 +13,7 @@ namespace Chessington.GameEngine.Pieces
         {
             Square location = board.FindPiece(this);
             List<Square> availableMoves = AddKnightMoves(location, board).ToList();
-            var outputMoves = availableMoves.Where(Board.InRange);
-            return outputMoves;
+            return availableMoves;
         }
 
         private List<Square> AddKnightMoves(Square location, Board board)
