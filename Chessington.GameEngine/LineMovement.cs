@@ -19,45 +19,37 @@ namespace Chessington.GameEngine
             bool dir1 = true,dir2 = true,dir3= true,dir4 = true;
             for (var i = 1; i < GameSettings.BoardSize; i++)
             {
-                if (Board.InRange(Square.At(location.Row, location.Col+i))&dir1)
+                if (dir1)
                 {
-                    dir1 = AddPossMove(location.Row, location.Col + i);
+                    bool[] indicators = AddPossMove(location.Row, location.Col + i);
+                    if (indicators[0])
+                        currMoveList.Add(Square.At(location.Row, location.Col + i));
+                    dir1 = indicators[1];
                 }
-
-                if (Board.InRange(Square.At(location.Row, location.Col-i))&dir2)
+                if (dir2)
                 {
-                    dir2 = AddPossMove(location.Row, location.Col - i);
+                    bool[] indicators = AddPossMove(location.Row, location.Col - i);
+                    if (indicators[0])
+                        currMoveList.Add(Square.At(location.Row, location.Col - i));
+                    dir2 = indicators[1];
                 }
-
-                if (Board.InRange(Square.At(location.Row+i, location.Col))&dir3)
+                if (dir3)
                 {
-                    dir3 = AddPossMove(location.Row+i, location.Col);
+                    bool[] indicators = AddPossMove(location.Row + i, location.Col);
+                    if (indicators[0])
+                        currMoveList.Add(Square.At(location.Row + i, location.Col));
+                    dir3 = indicators[1];
                 }
-
-                if (Board.InRange(Square.At(location.Row-i, location.Col))&dir4)
+                if (dir4)
                 {
-                    dir4 = AddPossMove(location.Row-i, location.Col);
+                    bool[] indicators = AddPossMove(location.Row - i, location.Col);
+                    if (indicators[0])
+                        currMoveList.Add(Square.At(location.Row - i, location.Col));
+                    dir4 = indicators[1];
                 }
             }
             return currMoveList;
-            
-            bool AddPossMove(int row, int col)
-            {
-                if (Board.SquareOpen(MyBoard, Square.At(row, col))) 
-                    currMoveList.Add(Square.At(row, col));
-                else if (Board.SquareLoyalty(MyBoard, Square.At(row, col)) == MyPlayer)
-                    return false;
-                else
-                {
-                    currMoveList.Add(Square.At(row, col));
-                    return false;
-                }
-
-                return true;
-            }
         }
-
-        
 
         public List<Square> DiagonalMovement(Square location)
         {
@@ -65,42 +57,44 @@ namespace Chessington.GameEngine
             bool dir1 = true,dir2 = true,dir3= true,dir4 = true;
             for (var i = 1; i < GameSettings.BoardSize; i++)
             {
-                if (Board.InRange(Square.At(location.Row+i, location.Col+i))&dir1)
+                if (dir1)
                 {
-                    dir1 = AddPossMove(location.Row+i, location.Col + i);
+                    bool[] indicators = AddPossMove(location.Row + i, location.Col + i);
+                    if (indicators[0])
+                        currMoveList.Add(Square.At(location.Row + i, location.Col + i));
+                    dir1 = indicators[1];
                 }
-
-                if (Board.InRange(Square.At(location.Row-i, location.Col-i))&dir2)
+                if (dir2)
                 {
-                    dir2 = AddPossMove(location.Row-i, location.Col - i);
+                    bool[] indicators = AddPossMove(location.Row - i, location.Col - i);
+                    if (indicators[0])
+                        currMoveList.Add(Square.At(location.Row - i, location.Col - i));
+                    dir2 = indicators[1];
                 }
-
-                if (Board.InRange(Square.At(location.Row+i, location.Col-i))&dir3)
+                if (dir3)
                 {
-                    dir3 = AddPossMove(location.Row+i, location.Col-i);
+                    bool[] indicators = AddPossMove(location.Row + i, location.Col - i);
+                    if (indicators[0])
+                        currMoveList.Add(Square.At(location.Row + i, location.Col - i));
+                    dir3 = indicators[1];
                 }
-
-                if (Board.InRange(Square.At(location.Row-i, location.Col+i))&dir4)
+                if (dir4)
                 {
-                    dir4 = AddPossMove(location.Row-i, location.Col+i);
+                    bool[] indicators = AddPossMove(location.Row - i, location.Col + i);
+                    if (indicators[0])
+                        currMoveList.Add(Square.At(location.Row - i, location.Col + i));
+                    dir4 = indicators[1];
                 }
             }
             return currMoveList;
-            
-            bool AddPossMove(int row, int col)
-            {
-                if (Board.SquareOpen(MyBoard, Square.At(row, col))) 
-                    currMoveList.Add(Square.At(row, col));
-                else if (Board.SquareLoyalty(MyBoard, Square.At(row, col)) == MyPlayer)
-                    return false;
-                else
-                {
-                    currMoveList.Add(Square.At(row, col));
-                    return false;
-                }
-
-                return true;
-            }
+        }
+        private bool[] AddPossMove(int row, int col)
+        {
+            if (!Board.InRange(Square.At(row, col)))
+                return new bool[] {false,false};
+            if (Board.SquareOpen(MyBoard, Square.At(row, col))) 
+                return new bool[] {true,true};;
+            return new bool[] {Board.SquareLoyalty(MyBoard, Square.At(row, col)) != MyPlayer,false};
         }
     }
 }

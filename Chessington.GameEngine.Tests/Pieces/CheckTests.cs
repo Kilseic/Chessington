@@ -5,5 +5,10 @@ namespace Chessington.GameEngine.Tests.Pieces
     [TestFixture]
     public class CheckTests
     {
+        [Test]
+        public void CheckByLateral()
+        {
+            
+        }
     }
 }
