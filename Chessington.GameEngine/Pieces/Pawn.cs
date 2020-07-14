@@ -13,6 +13,7 @@ namespace Chessington.GameEngine.Pieces
         {
             Square location = board.FindPiece(this);
             List<Square> availableMoves = new List<Square>();
+            JumpMovement doMoves = new JumpMovement(board,Player);
             if (Player == Player.White)
             {
                 TryAddMove(location.Row - 1, location.Row - 2);
@@ -27,30 +28,18 @@ namespace Chessington.GameEngine.Pieces
             void TryAddMove(int row1, int row2)
             {
                 Square frontByOne = Square.At(row1, location.Col);
-                if (CheckSquareMove(frontByOne))
+                if (doMoves.TryAddMove(frontByOne, false))
                 {
                     availableMoves.Add(frontByOne);
                 }
-                if ((HasEverMoved == false) & CheckSquareMove(frontByOne))
+                if ((HasEverMoved == false) & doMoves.TryAddMove(frontByOne, false))
                 {
                     Square frontByTwo = Square.At(row2, location.Col);
-                    if (CheckSquareMove(frontByTwo))
+                    if (doMoves.TryAddMove(frontByTwo, false))
                     {
                         availableMoves.Add(frontByTwo);
                     };
                 }
-            }
-
-            bool CheckSquareMove(Square inputSquare)
-            {
-                if (Board.InRange(inputSquare))
-                {
-                    if (Board.SquareOpen(board,inputSquare))
-                    {
-                        return true;
-                    }
-                }
-                return false;
             }
         }
     }

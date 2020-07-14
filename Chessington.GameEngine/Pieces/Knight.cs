@@ -13,36 +13,23 @@ namespace Chessington.GameEngine.Pieces
         {
             Square location = board.FindPiece(this);
             List<Square> availableMoves = AddKnightMoves(location, board).ToList();
+            JumpMovement doMoves = new JumpMovement(board,Player);
+            availableMoves = availableMoves.Where(inSq => doMoves.TryAddMove(inSq,true)).ToList();
             return availableMoves;
         }
 
         private List<Square> AddKnightMoves(Square location, Board board)
         {
             List<Square> moveOutput = new List<Square>();
-            TryAddMove(Square.At(location.Row + 2, location.Col + 1));
-            TryAddMove(Square.At(location.Row+2, location.Col-1));
-            TryAddMove(Square.At(location.Row-2, location.Col+1));
-            TryAddMove(Square.At(location.Row-2, location.Col-1));
-            TryAddMove(Square.At(location.Row+1, location.Col+2));
-            TryAddMove(Square.At(location.Row+1, location.Col-2));
-            TryAddMove(Square.At(location.Row-1, location.Col+2));
-            TryAddMove(Square.At(location.Row-1, location.Col-2));
+            moveOutput.Add(Square.At(location.Row+2, location.Col+1));
+            moveOutput.Add(Square.At(location.Row+2, location.Col-1));
+            moveOutput.Add(Square.At(location.Row-2, location.Col+1));
+            moveOutput.Add(Square.At(location.Row-2, location.Col-1));
+            moveOutput.Add(Square.At(location.Row+1, location.Col+2));
+            moveOutput.Add(Square.At(location.Row+1, location.Col-2));
+            moveOutput.Add(Square.At(location.Row-1, location.Col+2));
+            moveOutput.Add(Square.At(location.Row-1, location.Col-2));
             return moveOutput;
-
-            void TryAddMove(Square inputSquare)
-            {
-                if (Board.InRange(inputSquare))
-                {
-                    if (Board.SquareOpen(board, inputSquare))
-                    {
-                        moveOutput.Add(inputSquare);
-                    }
-                    else if (Board.SquareLoyalty(board, inputSquare) != Player)
-                    {
-                        moveOutput.Add(inputSquare);
-                    }
-                }
-            }
         }
     }
 }
