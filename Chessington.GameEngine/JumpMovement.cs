@@ -4,8 +4,8 @@ namespace Chessington.GameEngine
 {
     public class JumpMovement
     {
-        public Board MyBoard;
-        public Player MyPlayer;
+        private readonly Board MyBoard;
+        private readonly Player MyPlayer;
         public JumpMovement(Board board,Player player)
         {
             MyBoard = board;

@@ -34,6 +34,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Direction.cs" />
+    <Compile Include="DirectionIndicators.cs" />
     <Compile Include="JumpMovement.cs" />
     <Compile Include="LineMovement.cs" />
     <Compile Include="Pieces\Bishop.cs" />
