@@ -11,12 +11,16 @@ namespace Chessington.GameEngine
             MyBoard = board;
             MyPlayer = player;
         }
-        public bool TryAddMove(Square inputSquare, bool canTake)
+        public bool TryAddMove(Square inputSquare, bool canTake = true, bool onlyMoveOnTake = false)
         {
             if (Board.InRange(inputSquare))
             {
                 if (Board.SquareOpen(MyBoard, inputSquare))
+                {
+                    if (onlyMoveOnTake)
+                        return false;
                     return true;
+                }
                 if ((Board.SquareLoyalty(MyBoard, inputSquare) != MyPlayer)&canTake)
                     return true;
             }

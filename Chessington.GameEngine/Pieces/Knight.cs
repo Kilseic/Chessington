@@ -14,7 +14,7 @@ namespace Chessington.GameEngine.Pieces
             Square location = board.FindPiece(this);
             List<Square> availableMoves = AddKnightMoves(location, board).ToList();
             JumpMovement doMoves = new JumpMovement(board,Player);
-            availableMoves = availableMoves.Where(inSq => doMoves.TryAddMove(inSq,true)).ToList();
+            availableMoves = availableMoves.Where(inSq => doMoves.TryAddMove(inSq)).ToList();
             return availableMoves;
         }
 

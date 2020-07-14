@@ -16,16 +16,18 @@ namespace Chessington.GameEngine.Pieces
             JumpMovement doMoves = new JumpMovement(board,Player);
             if (Player == Player.White)
             {
-                TryAddMove(location.Row - 1, location.Row - 2);
+                TryAddForwardMove(location.Row - 1, location.Row - 2);
+                TryAddDiagonalMove(location.Row - 1);
             }
             else
             {
-                TryAddMove(location.Row + 1, location.Row + 2);
+                TryAddForwardMove(location.Row + 1, location.Row + 2);
+                TryAddDiagonalMove(location.Row + 1);
             }
             IEnumerable<Square> listOfMoves = availableMoves;
             return listOfMoves;
 
-            void TryAddMove(int row1, int row2)
+            void TryAddForwardMove(int row1, int row2)
             {
                 Square frontByOne = Square.At(row1, location.Col);
                 if (doMoves.TryAddMove(frontByOne, false))
@@ -40,6 +42,16 @@ namespace Chessington.GameEngine.Pieces
                         availableMoves.Add(frontByTwo);
                     };
                 }
+            }
+
+            void TryAddDiagonalMove(int inputRow)
+            {
+                Square leftTake = Square.At(inputRow, location.Col - 1);
+                if (doMoves.TryAddMove(leftTake, onlyMoveOnTake:true))
+                    availableMoves.Add(leftTake);
+                Square rightTake = Square.At(inputRow, location.Col + 1);
+                if (doMoves.TryAddMove(rightTake, onlyMoveOnTake:true))
+                    availableMoves.Add(rightTake);
             }
         }
     }
